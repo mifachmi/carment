@@ -1,0 +1,8 @@
+unknown
+door_dent
+bumper_scratch
+door_scratch
+glass_shatter
+tail_lamp
+head_lamp
+bumper_dent
