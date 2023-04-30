@@ -1,10 +1,10 @@
 package com.fachmi.privy.simpleimageclassification.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -19,28 +19,40 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fachmi.privy.simpleimageclassification.R
 import com.fachmi.privy.simpleimageclassification.TFLiteHelper
 import com.fachmi.privy.simpleimageclassification.databinding.DialogPickImageBinding
 import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluateImageBinding
+import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
 import com.fachmi.privy.simpleimageclassification.utils.*
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
     private lateinit var binding: FragmentEvaluateImageBinding
     private lateinit var tfLiteHelper: TFLiteHelper
     private var bitmap: Bitmap? = null
-    private lateinit var imageUri: Uri
+    private lateinit var finalImageUri: Uri
     private val cameraOutputFile by lazy { createImageFile(requireContext()) }
 
     private var listener: ImagePickerListener? = null
+
+    private var finalData = CarDamageModel(
+        carImage = Uri.EMPTY,
+        date = "",
+        tingkatKerusakan = "",
+        tindakanReparasi = "",
+        estimasiHarga = ""
+    )
 
     companion object {
         private val PERMISSION_LIST = arrayOf(
@@ -64,6 +76,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onViewCreated(view, savedInstanceState)
 
+        initModel()
         showProgressBar()
         setupClickListener()
     }
@@ -74,6 +87,11 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     ): View {
         binding = FragmentEvaluateImageBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private fun initModel() {
+        tfLiteHelper = TFLiteHelper(requireActivity())
+        tfLiteHelper.init()
     }
 
     private fun showProgressBar() {
@@ -96,7 +114,8 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputTipeMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty()) {
                     requireContext().showToast("Mohon isi semua data terlebih dahulu")
                 } else {
-                    findNavController().navigate(R.id.action_evaluateImageFragment_to_evaluationReportFragment)
+                    runTheModel()
+//                    findNavController().navigate(R.id.action_evaluateImageFragment_to_evaluationReportFragment)
                 }
             }
         }
@@ -171,6 +190,14 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         registerForActivityResult(getUCropContracts()) { croppedImageUri ->
             croppedImageUri?.let {
                 val croppedImageFile = croppedImageUri.toFile()
+                context?.let { ctx ->
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(ctx.contentResolver, it)
+                        ctx.showToast("Image is loaded: $it")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
                 listener?.onImageSelected(croppedImageFile)
             }
         }
@@ -179,9 +206,79 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         binding.apply {
             binding.apply {
                 ivUploadedImage.setImageURI(imageFile.toUri())
+                finalImageUri = imageFile.toUri()
                 ivUploadedImage.alpha = 1f
                 btnPickImage.visibility = View.GONE
             }
+        }
+    }
+
+    private fun runTheModel() {
+        context?.let { ctx ->
+            if (bitmap == null) {
+                ctx.showToast("Please select image")
+            }
+            bitmap?.let {
+                tfLiteHelper.classifyImage(it)
+                setLabel(tfLiteHelper.showResult())
+                finalData = determineOutput(tfLiteHelper.showResult())
+                Log.d("finaldata", "runTheModel: $finalData")
+                goToEvaluationReportFragment(finalData)
+            }
+        }
+    }
+
+    private fun goToEvaluationReportFragment(finalData: CarDamageModel) {
+        val bundle = Bundle().apply {
+            putParcelable("dataEvaluation", finalData)
+        }
+        findNavController().navigate(
+            R.id.action_evaluateImageFragment_to_evaluationReportFragment,
+            bundle
+        )
+    }
+
+    private fun setLabel(label: String?) {
+        context?.showToast(label.toString())
+    }
+
+    private fun determineOutput(label: String?): CarDamageModel {
+        return CarDamageModel(
+            carImage = finalImageUri,
+            date = getCurrentDate(),
+            tingkatKerusakan = determineLevelDamage(label),
+            tindakanReparasi = determineReparationAction(label),
+            estimasiHarga = determineReparationCost(label)
+        )
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun getCurrentDate(): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        return sdf.format(Date())
+    }
+
+    private fun determineLevelDamage(label: String?): String {
+        return when (label) {
+            "head_lamp" -> "Ringan"
+            "bumper_dent" -> "Sedang"
+            else -> "Berat"
+        }
+    }
+
+    private fun determineReparationAction(label: String?): String {
+        return when (label) {
+            "head_lamp" -> "Dibawa ke bengkel"
+            "bumper_dent" -> "Dicat ulang"
+            else -> "Beli mobil baru"
+        }
+    }
+
+    private fun determineReparationCost(label: String?): String {
+        return when (label) {
+            "head_lamp" -> "Rp 500.000"
+            "bumper_dent" -> "Rp 1.000.000"
+            else -> "Rp 100.000.000"
         }
     }
 

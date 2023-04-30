@@ -18,7 +18,7 @@
         android:id="@+id/evaluateImageFragment"
         android:name="com.fachmi.privy.simpleimageclassification.view.EvaluateImageFragment"
         android:label="fragment_evaluate_image"
-        tools:layout="@layout/fragment_evaluate_image" >
+        tools:layout="@layout/fragment_evaluate_image">
         <action
             android:id="@+id/action_evaluateImageFragment_to_evaluationReportFragment"
             app:destination="@id/evaluationReportFragment" />
@@ -27,5 +27,9 @@
         android:id="@+id/evaluationReportFragment"
         android:name="com.fachmi.privy.simpleimageclassification.view.EvaluationReportFragment"
         android:label="fragment_evaluation_report"
-        tools:layout="@layout/fragment_evaluation_report" />
+        tools:layout="@layout/fragment_evaluation_report">
+        <argument
+            android:name="dataEvaluation"
+            app:argType="com.fachmi.privy.simpleimageclassification.model.CarDamageModel" />
+    </fragment>
 </navigation>

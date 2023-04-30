@@ -13,13 +13,16 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
+import com.fachmi.privy.simpleimageclassification.R
 import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluationReportBinding
+import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
 import com.fachmi.privy.simpleimageclassification.utils.showToast
 import java.io.File
 import java.io.FileOutputStream
@@ -44,6 +47,7 @@ class EvaluationReportFragment : Fragment() {
 
         showProgressBar()
         handleClickListeners()
+        receiveParcelable()
     }
 
     private fun showProgressBar() {
@@ -62,7 +66,21 @@ class EvaluationReportFragment : Fragment() {
                 context?.showToast("coming soon feature")
             }
             btnBack.setOnClickListener {
-                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.homeFragment, false)
+            }
+        }
+    }
+
+    private fun receiveParcelable() {
+        val result = arguments?.getParcelable<CarDamageModel>("dataEvaluation")
+        result?.let { data ->
+            Log.d("receiveParcelable", "receiveParcelable: $data")
+            binding.apply {
+                tvTanggalEvaluasi.text = data.date
+                tvTingkatKerusakan.text = data.tingkatKerusakan
+                tvTindakanReparasi.text = data.tindakanReparasi
+                tvEstimasiReparasi.text = data.estimasiHarga
+                ivEvaluatedImage.setImageURI(data.carImage)
             }
         }
     }
