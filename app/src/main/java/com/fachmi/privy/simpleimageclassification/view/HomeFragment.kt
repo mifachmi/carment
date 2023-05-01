@@ -5,12 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.fachmi.privy.simpleimageclassification.R
 import com.fachmi.privy.simpleimageclassification.databinding.FragmentHomeBinding
+import com.fachmi.privy.simpleimageclassification.utils.showToast
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -27,12 +26,25 @@ class HomeFragment : Fragment() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onViewCreated(view, savedInstanceState)
 
-        greeting()
+        setupClickListeners()
     }
 
-    private fun greeting() {
-        binding.btnEvaluateImage.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_evaluateImageFragment)
+    private fun setupClickListeners() {
+        context?.let { ctx ->
+            binding.apply {
+                btnEvaluateImage.setOnClickListener {
+                    findNavController().navigate(R.id.action_homeFragment_to_evaluateImageFragment)
+                }
+                btnEvaluateHistory.setOnClickListener {
+                    ctx.showToast("Fitur ini belum tersedia")
+                }
+                btnDataBengkel.setOnClickListener {
+                    ctx.showToast("Fitur ini belum tersedia")
+                }
+                btnPetunjukPenggunaan.setOnClickListener {
+                    findNavController().navigate(R.id.action_homeFragment_to_userGuideFragment)
+                }
+            }
         }
     }
 }

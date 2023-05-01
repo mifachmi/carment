@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_evaluateImageFragment"
             app:destination="@id/evaluateImageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_userGuideFragment"
+            app:destination="@id/userGuideFragment" />
     </fragment>
     <fragment
         android:id="@+id/evaluateImageFragment"
@@ -32,4 +35,9 @@
             android:name="dataEvaluation"
             app:argType="com.fachmi.privy.simpleimageclassification.model.CarDamageModel" />
     </fragment>
+    <fragment
+        android:id="@+id/userGuideFragment"
+        android:name="com.fachmi.privy.simpleimageclassification.view.UserGuideFragment"
+        android:label="fragment_user_guide"
+        tools:layout="@layout/fragment_user_guide" />
 </navigation>
