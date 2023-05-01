@@ -23,7 +23,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fachmi.privy.simpleimageclassification.R
 import com.fachmi.privy.simpleimageclassification.TFLiteHelper
@@ -49,16 +48,15 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     private var finalData = CarDamageModel(
         carImage = Uri.EMPTY,
         date = "",
+        merkMobil = "",
+        modelMobil = "",
+        tahunMobil = "",
+        varianMobil = "",
+        jenisKerusakan = "",
         tingkatKerusakan = "",
         tindakanReparasi = "",
         estimasiHarga = ""
     )
-
-    companion object {
-        private val PERMISSION_LIST = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-        )
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -82,8 +80,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentEvaluateImageBinding.inflate(inflater, container, false)
         return binding.root
@@ -95,14 +92,14 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     }
 
     private fun showProgressBar() {
-        binding.pbLoading.visibility = View.VISIBLE
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.apply {
+        binding.apply {
+            nsvEvaluateImage.visibility = View.GONE
+            pbLoading.visibility = View.VISIBLE
+            Handler(Looper.getMainLooper()).postDelayed({
                 pbLoading.visibility = View.GONE
                 nsvEvaluateImage.visibility = View.VISIBLE
-                btnEvaluasiGambar.visibility = View.VISIBLE
-            }
-        }, 1000)
+            }, 1000)
+        }
     }
 
     private fun setupClickListener() {
@@ -111,11 +108,10 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 showDialogPickImage()
             }
             btnEvaluasiGambar.setOnClickListener {
-                if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputTipeMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty()) {
+                if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputModelMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty() && etInputVarianMobil.text.isEmpty()) {
                     requireContext().showToast("Mohon isi semua data terlebih dahulu")
                 } else {
                     runTheModel()
-//                    findNavController().navigate(R.id.action_evaluateImageFragment_to_evaluationReportFragment)
                 }
             }
         }
@@ -125,8 +121,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         val dialog = Dialog(requireContext())
         val bindingView = DialogPickImageBinding.inflate(layoutInflater)
         dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.setContentView(bindingView.root)
@@ -139,8 +134,10 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
         bindingView.btnFromCamera.setOnClickListener {
             // In your code where you want to start the camera activity, call the cameraPermissionLauncher
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
                 cameraLauncher.openCamera(requireContext(), cameraOutputFile)
             } else {
@@ -193,7 +190,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 context?.let { ctx ->
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(ctx.contentResolver, it)
-                        ctx.showToast("Image is loaded: $it")
+                        Log.d("cropImageLauncher", "Image is loaded: $it")
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -220,7 +217,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
             }
             bitmap?.let {
                 tfLiteHelper.classifyImage(it)
-                setLabel(tfLiteHelper.showResult())
+                Log.d("runTheModel", "runTheModel: ${setLabel(tfLiteHelper.showResult())}")
                 finalData = determineOutput(tfLiteHelper.showResult())
                 Log.d("finaldata", "runTheModel: $finalData")
                 goToEvaluationReportFragment(finalData)
@@ -233,8 +230,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
             putParcelable("dataEvaluation", finalData)
         }
         findNavController().navigate(
-            R.id.action_evaluateImageFragment_to_evaluationReportFragment,
-            bundle
+            R.id.action_evaluateImageFragment_to_evaluationReportFragment, bundle
         )
     }
 
@@ -246,6 +242,11 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         return CarDamageModel(
             carImage = finalImageUri,
             date = getCurrentDate(),
+            merkMobil = binding.etInputMerkMobil.text.toString(),
+            modelMobil = binding.etInputModelMobil.text.toString(),
+            tahunMobil = binding.etInputTahunKeluaranMobil.text.toString(),
+            varianMobil = binding.etInputVarianMobil.text.toString(),
+            jenisKerusakan = determineDamageType(label),
             tingkatKerusakan = determineLevelDamage(label),
             tindakanReparasi = determineReparationAction(label),
             estimasiHarga = determineReparationCost(label)
@@ -254,8 +255,16 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
     @SuppressLint("SimpleDateFormat")
     private fun getCurrentDate(): String {
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val sdf = SimpleDateFormat("dd MMMM yyyy hh:mm:ss")
         return sdf.format(Date())
+    }
+
+    private fun determineDamageType(label: String?): String {
+        return when (label) {
+            "head_lamp" -> "Lampu depan"
+            "bumper_dent" -> "Bumper Penyok"
+            else -> "Kaca depan"
+        }
     }
 
     private fun determineLevelDamage(label: String?): String {

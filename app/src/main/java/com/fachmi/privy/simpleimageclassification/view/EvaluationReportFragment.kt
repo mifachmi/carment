@@ -1,18 +1,10 @@
 package com.fachmi.privy.simpleimageclassification.view
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageFormat
-import android.hardware.display.DisplayManager
-import android.media.ImageReader
-import android.media.projection.MediaProjectionManager
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,16 +13,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import com.fachmi.privy.simpleimageclassification.R
+import com.fachmi.privy.simpleimageclassification.databinding.DialogQuitConfirmationBinding
 import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluationReportBinding
+import com.fachmi.privy.simpleimageclassification.databinding.ScreenshotInformationBinding
 import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
-import com.fachmi.privy.simpleimageclassification.utils.showToast
-import java.io.File
-import java.io.FileOutputStream
 
 class EvaluationReportFragment : Fragment() {
 
     private lateinit var binding: FragmentEvaluationReportBinding
-    private lateinit var mediaProjectionManager: MediaProjectionManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,32 +41,39 @@ class EvaluationReportFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.pbLoading.visibility = View.VISIBLE
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.apply {
+        binding.apply {
+            nsvReportEvaluation.visibility = View.GONE
+            pbLoading.visibility = View.VISIBLE
+            Handler(Looper.getMainLooper()).postDelayed({
                 pbLoading.visibility = View.GONE
                 nsvReportEvaluation.visibility = View.VISIBLE
-            }
-        }, 1000)
+            }, 1000)
+        }
     }
 
     private fun handleClickListeners() {
         binding.apply {
             btnSimpanBuktiEvaluasi.setOnClickListener {
-                context?.showToast("coming soon feature")
+                showScreenshotInformation()
             }
             btnBack.setOnClickListener {
-                findNavController().popBackStack(R.id.homeFragment, false)
+                showQuitConfirmation()
             }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun receiveParcelable() {
         val result = arguments?.getParcelable<CarDamageModel>("dataEvaluation")
         result?.let { data ->
             Log.d("receiveParcelable", "receiveParcelable: $data")
             binding.apply {
-                tvTanggalEvaluasi.text = data.date
+                tvTanggalEvaluasi.text = "${data.date} WIB"
+                tvMerkMobil.text = data.merkMobil
+                tvModelMobil.text = data.modelMobil
+                tvTahunMobil.text = data.tahunMobil
+                tvVarianMobil.text = data.varianMobil
+                tvJenisKerusakan.text = data.jenisKerusakan
                 tvTingkatKerusakan.text = data.tingkatKerusakan
                 tvTindakanReparasi.text = data.tindakanReparasi
                 tvEstimasiReparasi.text = data.estimasiHarga
@@ -85,61 +82,46 @@ class EvaluationReportFragment : Fragment() {
         }
     }
 
-    private fun takeScreenshot() {
+    private fun showQuitConfirmation() {
         context?.let { ctx ->
-            mediaProjectionManager =
-                ctx.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-            val captureIntent = mediaProjectionManager.createScreenCaptureIntent()
-            startActivityForResult(captureIntent, REQUEST_CODE_SCREENSHOT)
-        }
-    }
+            val dialog = Dialog(ctx)
+            val bindingView = DialogQuitConfirmationBinding.inflate(layoutInflater)
+            dialog.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog.setContentView(bindingView.root)
+            dialog.show()
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        context?.let { ctx ->
-            val displayMetrics = DisplayMetrics()
-            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            val screenWidth = displayMetrics.widthPixels
-            val screenHeight = displayMetrics.heightPixels
-            val screenDensity = displayMetrics.densityDpi
-
-            if (requestCode == REQUEST_CODE_SCREENSHOT && resultCode == Activity.RESULT_OK && data != null) {
-                val mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data)
-                val imageReader = ImageReader.newInstance(
-                    screenWidth,
-                    screenHeight,
-                    ImageFormat.FLEX_RGBA_8888,
-                    2
-                )
-                val virtualDisplay = mediaProjection.createVirtualDisplay(
-                    "ScreenCapture",
-                    screenWidth, screenHeight, screenDensity,
-                    DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                    imageReader.surface, null, null
-                )
-                val handler = Handler(Looper.getMainLooper())
-                handler.postDelayed({
-                    val image = imageReader.acquireLatestImage()
-                    val bitmap =
-                        Bitmap.createBitmap(image.width, image.height, Bitmap.Config.ARGB_8888)
-                    bitmap.copyPixelsFromBuffer(image.planes[0].buffer)
-                    image.close()
-                    mediaProjection.stop()
-                    val file = File(
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                        "screenshot.png"
-                    )
-                    val outputStream = FileOutputStream(file)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                    outputStream.flush()
-                    outputStream.close()
-                    ctx.showToast("Screenshot saved to ${file.absolutePath}")
-                }, 1000)
+            bindingView.apply {
+                btnTidak.setOnClickListener {
+                    dialog.dismiss()
+                }
+                btnYa.setOnClickListener {
+                    findNavController().popBackStack(R.id.homeFragment, false)
+                    dialog.dismiss()
+                }
             }
         }
     }
 
-    companion object {
-        private const val REQUEST_CODE_SCREENSHOT = 1
+    private fun showScreenshotInformation() {
+        context?.let { ctx ->
+            val dialog = Dialog(ctx)
+            val bindingView = ScreenshotInformationBinding.inflate(layoutInflater)
+            dialog.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            dialog.setContentView(bindingView.root)
+            dialog.show()
+
+            bindingView.apply {
+                btnMengerti.setOnClickListener {
+                    dialog.dismiss()
+                }
+            }
+        }
     }
+
 }

@@ -8,6 +8,11 @@ import kotlinx.parcelize.Parcelize
 data class CarDamageModel(
     val carImage: Uri,
     val date: String,
+    val merkMobil: String,
+    val modelMobil: String,
+    val varianMobil: String,
+    val tahunMobil: String,
+    val jenisKerusakan: String,
     val tingkatKerusakan: String,
     val tindakanReparasi: String,
     val estimasiHarga: String
