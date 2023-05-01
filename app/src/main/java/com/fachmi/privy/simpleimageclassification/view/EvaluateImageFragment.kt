@@ -217,7 +217,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
             }
             bitmap?.let {
                 tfLiteHelper.classifyImage(it)
-                Log.d("runTheModel", "runTheModel: ${setLabel(tfLiteHelper.showResult())}")
+                setLabel(tfLiteHelper.showResult())
                 finalData = determineOutput(tfLiteHelper.showResult())
                 Log.d("finaldata", "runTheModel: $finalData")
                 goToEvaluationReportFragment(finalData)
@@ -235,7 +235,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     }
 
     private fun setLabel(label: String?) {
-        context?.showToast(label.toString())
+        Log.d("setLabel", "setLabel: $label")
     }
 
     private fun determineOutput(label: String?): CarDamageModel {
