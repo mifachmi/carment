@@ -11,7 +11,7 @@
         android:id="@+id/pb_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         android:id="@+id/nsv_report_evaluation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -86,13 +86,113 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_jenis_kerusakan"
+                android:id="@+id/ll_merk_mobil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="12dp"
                 app:layout_constraintTop_toBottomOf="@id/ll_tanggal_evaluasi">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Merk Mobil"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_merk_mobil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Honda" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_model_mobil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_merk_mobil">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Model Mobil"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_model_mobil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Civic" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_tahun_mobil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_model_mobil">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tahun Keluaran Mobil"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_tahun_mobil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="2000" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_varian_mobil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_tahun_mobil">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Varian Mobil"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_varian_mobil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="1.5 RS Bensin-AT" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_jenis_kerusakan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_varian_mobil">
 
                 <TextView
                     android:layout_width="match_parent"
