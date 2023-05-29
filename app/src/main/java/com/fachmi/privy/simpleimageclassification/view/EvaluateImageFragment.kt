@@ -261,33 +261,53 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
     private fun determineDamageType(label: String?): String {
         return when (label) {
-            "head_lamp" -> "Lampu depan"
-            "bumper_dent" -> "Bumper Penyok"
-            else -> "Kaca depan"
+            "bumper_dent_minor" -> "Bumper Penyok"
+            "bumper_dent_severe" -> "Bumper Penyok"
+            "bumper_scratch_minor" -> "Bumper Tergores"
+            "door_dent_minor" -> "Pintu Penyok"
+            "door_dent_severe" -> "Pintu Penyok"
+            "door_scratch_minor" -> "Pintu Tergores"
+            "glass_shatter_severe" -> "Kaca Pecah"
+            "head_lamp_severe" -> "Lampu Depan"
+            "tail_lamp_severe" -> "Lampu Belakang"
+            else -> "Kerusakan tidak diketahui"
         }
     }
 
     private fun determineLevelDamage(label: String?): String {
         return when (label) {
-            "head_lamp" -> "Ringan"
-            "bumper_dent" -> "Sedang"
-            else -> "Berat"
+            "minor" -> "Ringan - Sedang"
+            "severe" -> "Sedang - Berat"
+            else -> "Tidak diketahui"
         }
     }
 
     private fun determineReparationAction(label: String?): String {
         return when (label) {
-            "head_lamp" -> "Dibawa ke bengkel"
-            "bumper_dent" -> "Dicat ulang"
-            else -> "Beli mobil baru"
+            "door_dent_minor" -> "Dipoles dan didempul"
+            "door_dent_severe" -> "Ganti 1 panel"
+            "bumper_dent_minor" -> "Dipoles, didempul dan di cat ulang"
+            "bumper_dent_severe" -> "Ganti 1 panel"
+            "glass_shatter_severe" -> "Ganti 1 panel kaca"
+            "door_scratch_minor" -> "Dipoles, didempul, dan dicat ulang"
+            "head_lamp_severe" -> "Ganti panel dan sparepart"
+            "tail_lamp_severe" -> "Ganti panel dan sparepart"
+            else -> "Tindakan reparasi tidak bisa ditentukan"
         }
     }
 
     private fun determineReparationCost(label: String?): String {
         return when (label) {
-            "head_lamp" -> "Rp 500.000"
-            "bumper_dent" -> "Rp 1.000.000"
-            else -> "Rp 100.000.000"
+            "bumper_dent_minor" -> "Rp. 580.000 - Rp. 1.000.000"
+            "bumper_dent_severe" -> "Rp. 600.000 - Rp. 1.355.000"
+            "bumper_scratch_minor" -> "Rp. 450.000 - Rp. 800.000"
+            "door_dent_minor" -> "Rp. 500.000 - Rp. 700.000"
+            "door_dent_severe" -> "Rp. 700.000 - Rp. 1.645.000"
+            "door_scratch_minor" -> "Rp. 200.000 - Rp. 1.234.000"
+            "glass_shatter_severe" -> "Rp. 350.000 - Rp. 2.359.000"
+            "head_lamp_severe" -> "Rp. 70.000 - Rp. 200.000"
+            "tail_lamp_severe" -> "Rp. 70.000 - Rp. 200.000"
+            else -> "Harga estimasi tidak bisa ditentukan"
         }
     }
 
