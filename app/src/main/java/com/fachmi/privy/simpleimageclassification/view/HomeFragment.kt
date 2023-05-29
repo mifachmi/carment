@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
                     ctx.showToast("Fitur ini belum tersedia")
                 }
                 btnDataBengkel.setOnClickListener {
-                    ctx.showToast("Fitur ini belum tersedia")
+                    findNavController().navigate(R.id.action_homeFragment_to_dataBengkelFragment)
                 }
                 btnPetunjukPenggunaan.setOnClickListener {
                     findNavController().navigate(R.id.action_homeFragment_to_userGuideFragment)

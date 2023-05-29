@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_userGuideFragment"
             app:destination="@id/userGuideFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_dataBengkelFragment"
+            app:destination="@id/dataBengkelFragment" />
     </fragment>
     <fragment
         android:id="@+id/evaluateImageFragment"
@@ -40,4 +43,9 @@
         android:name="com.fachmi.privy.simpleimageclassification.view.UserGuideFragment"
         android:label="fragment_user_guide"
         tools:layout="@layout/fragment_user_guide" />
+    <fragment
+        android:id="@+id/dataBengkelFragment"
+        android:name="com.fachmi.privy.simpleimageclassification.view.DataBengkelFragment"
+        android:label="fragment_data_bengkel"
+        tools:layout="@layout/fragment_data_bengkel" />
 </navigation>
