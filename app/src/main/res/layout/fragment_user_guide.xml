@@ -71,6 +71,36 @@
                 android:text="Contohnya:\n\nHonda Jazz: RS, S, RS CVT, S CVT.\nMitsubishi Xpander: Exceed, GLS, GLX, Sport.\nToyota Avanza: E, G, Veloz.\ndll."
                 android:textSize="14sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="36dp"
+                android:gravity="center"
+                android:text="Mengenai Estimasi\nHarga"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:justificationMode="inter_word"
+                android:text="Sebagai informasi, estimasi harga yang diinformasikan di halaman Hasil Evaluasi didapatkan dari survei yang dilakukan developer ke beberapa bengkel resmi, seperti Honda, Daihatsu, dan Mitsubishi.\n\nHarga yang tercantum merupakan interval harga terendah dan tertinggi dari semua merk dan model mobil di bagian yang rusak. Sebagai contoh: " />
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="12dp"
+                android:src="@drawable/bumper_dent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:justificationMode="inter_word"
+                android:text="Gambar tersebut terevaluasi sebagai kerusakan di bagian Bumper, sehingga estimasi harga reparasinya disesuaikan berdasarkan merk, model, dan warna mobil.\n\nDalam kasus tersebut, mobil tersebut memiliki spesifikasi yaitu Honda Civic Putih sehingga estimasi harga yang keluar adalah interval harga terendah dan tertinggi di merk Honda dari semua model mobil." />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -161,7 +161,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_varian_mobil"
+                android:id="@+id/ll_ukuran_mobil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -172,16 +172,41 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Varian Mobil"
+                    android:text="Ukuran Mobil"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tv_varian_mobil"
+                    android:id="@+id/tv_ukuran_mobil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="1.5 RS Bensin-AT" />
+                    android:text="Kecil" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_warna_mobil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_ukuran_mobil">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Warna Mobil"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_warna_mobil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Putih Mutiara" />
 
             </LinearLayout>
 
@@ -192,7 +217,7 @@
                 android:layout_marginTop="24dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="12dp"
-                app:layout_constraintTop_toBottomOf="@id/ll_varian_mobil">
+                app:layout_constraintTop_toBottomOf="@id/ll_warna_mobil">
 
                 <TextView
                     android:layout_width="match_parent"

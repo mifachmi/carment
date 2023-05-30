@@ -28,10 +28,14 @@ import com.fachmi.privy.simpleimageclassification.R
 import com.fachmi.privy.simpleimageclassification.TFLiteHelper
 import com.fachmi.privy.simpleimageclassification.databinding.DialogPickImageBinding
 import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluateImageBinding
+import com.fachmi.privy.simpleimageclassification.ml.AutoModel10classesMobilenetv2
 import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
 import com.fachmi.privy.simpleimageclassification.utils.*
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import java.io.IOException
+import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -51,7 +55,8 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         merkMobil = "",
         modelMobil = "",
         tahunMobil = "",
-        varianMobil = "",
+        ukuranMobil = "",
+        warnaMobil = "",
         jenisKerusakan = "",
         tingkatKerusakan = "",
         tindakanReparasi = "",
@@ -108,7 +113,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 showDialogPickImage()
             }
             btnEvaluasiGambar.setOnClickListener {
-                if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputModelMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty() && etInputVarianMobil.text.isEmpty()) {
+                if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputModelMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty() && etInputUkuranMobil.text.isEmpty()) {
                     requireContext().showToast("Mohon isi semua data terlebih dahulu")
                 } else {
                     runTheModel()
@@ -185,17 +190,28 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
     private val cropImageLauncher =
         registerForActivityResult(getUCropContracts()) { croppedImageUri ->
-            croppedImageUri?.let {
-                val croppedImageFile = croppedImageUri.toFile()
-                context?.let { ctx ->
+            try {
+                if (croppedImageUri != null) {
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(ctx.contentResolver, it)
-                        Log.d("cropImageLauncher", "Image is loaded: $it")
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+                        val croppedImageFile = croppedImageUri.toFile()
+                        context?.let { ctx ->
+                            try {
+                                bitmap = MediaStore.Images.Media.getBitmap(
+                                    ctx.contentResolver,
+                                    croppedImageUri
+                                )
+                                Log.d("cropImageLauncher", "Image is loaded: $croppedImageUri")
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            }
+                        }
+                        listener?.onImageSelected(croppedImageFile)
+                    } catch (e: NullPointerException) {
+                        fragmentManager?.popBackStack()
                     }
                 }
-                listener?.onImageSelected(croppedImageFile)
+            } catch (e: NullPointerException) {
+                findNavController().popBackStack()
             }
         }
 
@@ -216,7 +232,8 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 ctx.showToast("Please select image")
             }
             bitmap?.let {
-                tfLiteHelper.classifyImage(it)
+                val scaledImage = Bitmap.createScaledBitmap(it, 224, 224, false)
+                tfLiteHelper.classifyImage(scaledImage)
                 setLabel(tfLiteHelper.showResult())
                 finalData = determineOutput(tfLiteHelper.showResult())
                 Log.d("finaldata", "runTheModel: $finalData")
@@ -242,10 +259,11 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         return CarDamageModel(
             carImage = finalImageUri,
             date = getCurrentDate(),
-            merkMobil = binding.etInputMerkMobil.text.toString(),
-            modelMobil = binding.etInputModelMobil.text.toString(),
+            merkMobil = binding.etInputMerkMobil.text.toString().lowercase(),
+            modelMobil = binding.etInputModelMobil.text.toString().lowercase(),
             tahunMobil = binding.etInputTahunKeluaranMobil.text.toString(),
-            varianMobil = binding.etInputVarianMobil.text.toString(),
+            ukuranMobil = binding.etInputUkuranMobil.text.toString().lowercase(),
+            warnaMobil = binding.etInputWarnaMobil.text.toString().lowercase(),
             jenisKerusakan = determineDamageType(label),
             tingkatKerusakan = determineLevelDamage(label),
             tindakanReparasi = determineReparationAction(label),
@@ -275,7 +293,8 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     }
 
     private fun determineLevelDamage(label: String?): String {
-        return when (label) {
+        val listString = label?.split("_")
+        return when (listString?.get(2)) {
             "minor" -> "Ringan - Sedang"
             "severe" -> "Sedang - Berat"
             else -> "Tidak diketahui"
@@ -298,7 +317,39 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
     private fun determineReparationCost(label: String?): String {
         return when (label) {
-            "bumper_dent_minor" -> "Rp. 580.000 - Rp. 1.000.000"
+            "bumper_dent_minor" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> "jdsdsd"
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia" -> createReadablePrice("580.000", "600.000")
+                            "sigra" -> createReadablePrice("580.000", "600.000")
+                            "terios" -> createReadablePrice("580.000", "600.000")
+                            "rocky" -> createReadablePrice("580.000", "600.000")
+                            "sirion" -> createReadablePrice("580.000", "600.000")
+                            "ayla" -> createReadablePrice("580.000", "600.000")
+                            "luxio" -> createReadablePrice("580.000", "600.000")
+                            else -> createReadablePrice("672.000", "870.000")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia" -> createReadablePrice("580.000", "600.000")
+                            "sigra" -> createReadablePrice("580.000", "600.000")
+                            "terios" -> createReadablePrice("580.000", "600.000")
+                            "rocky" -> createReadablePrice("580.000", "600.000")
+                            "sirion" -> createReadablePrice("580.000", "600.000")
+                            "ayla" -> createReadablePrice("580.000", "600.000")
+                            "luxio" -> createReadablePrice("580.000", "600.000")
+                            else -> createReadablePrice("672.000", "870.000")
+                        }
+                    }
+
+                    else -> "fdfd"
+                }
+            }
+
             "bumper_dent_severe" -> "Rp. 600.000 - Rp. 1.355.000"
             "bumper_scratch_minor" -> "Rp. 450.000 - Rp. 800.000"
             "door_dent_minor" -> "Rp. 500.000 - Rp. 700.000"
@@ -309,6 +360,10 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
             "tail_lamp_severe" -> "Rp. 70.000 - Rp. 200.000"
             else -> "Harga estimasi tidak bisa ditentukan"
         }
+    }
+
+    private fun createReadablePrice(lowestPrice: String, highestPrice: String): String {
+        return "Rp. $lowestPrice - Rp. $highestPrice"
     }
 
     override fun onResume() {

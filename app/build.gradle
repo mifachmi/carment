@@ -34,6 +34,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        mlModelBinding true
     }
 }
 
@@ -53,9 +54,12 @@ dependencies {
     // Tensorflow Lite dependencies
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
+//    implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
+//    implementation 'com.google.android.gms:play-services-tflite-gpu:16.1.0'
 
     // Image cropping
     implementation 'com.github.yalantis:ucrop:2.2.6'
+//    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

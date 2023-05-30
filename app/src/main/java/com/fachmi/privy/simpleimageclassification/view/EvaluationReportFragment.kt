@@ -69,10 +69,11 @@ class EvaluationReportFragment : Fragment() {
             Log.d("receiveParcelable", "receiveParcelable: $data")
             binding.apply {
                 tvTanggalEvaluasi.text = "${data.date} WIB"
-                tvMerkMobil.text = data.merkMobil
-                tvModelMobil.text = data.modelMobil
+                tvMerkMobil.text = data.merkMobil.capitalize()
+                tvModelMobil.text = data.modelMobil.capitalize()
                 tvTahunMobil.text = data.tahunMobil
-                tvVarianMobil.text = data.varianMobil
+                tvUkuranMobil.text = data.ukuranMobil.capitalize()
+                tvWarnaMobil.text = data.warnaMobil.capitalize()
                 tvJenisKerusakan.text = data.jenisKerusakan
                 tvTingkatKerusakan.text = data.tingkatKerusakan
                 tvTindakanReparasi.text = data.tindakanReparasi
