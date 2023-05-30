@@ -1,0 +1,10 @@
+bumper_dent_minor
+bumper_dent_severe
+bumper_scratch_minor
+door_dent_minor
+door_dent_severe
+door_scratch_minor
+glass_shatter_severe
+head_lamp_severe
+tail_lamp_severe
+unknown_unknown

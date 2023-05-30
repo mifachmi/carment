@@ -2,6 +2,9 @@ package com.fachmi.privy.simpleimageclassification
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.util.Log
+import com.fachmi.privy.simpleimageclassification.ml.AutoModel10classesMobilenetv2
+import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.FileUtil
 import org.tensorflow.lite.support.common.TensorOperator
@@ -20,7 +23,10 @@ import java.util.*
 
 class TFLiteHelper constructor(private val activity: Activity) {
 
-    private val MODEL_NAME = "car_damage_model.tflite"
+    companion object {
+        private const val MODEL_NAME = "10classes_mobilenetv2.tflite"
+//        private const val MODEL_NAME = "car_damage_model.tflite"
+    }
 
     private lateinit var tflite: Interpreter
     private var labels: List<String>? = null
@@ -29,8 +35,8 @@ class TFLiteHelper constructor(private val activity: Activity) {
     private lateinit var outputProbabilityBuffer: TensorBuffer
     private lateinit var probabilityProcessor: TensorProcessor
 
-    private var imageSizeX = 0
-    private var imageSizeY = 0
+    private var imageSizeX = 224
+    private var imageSizeY = 224
 
     private val IMAGE_MEAN = 0.0f
     private val IMAGE_STD = 1.0f
@@ -96,20 +102,21 @@ class TFLiteHelper constructor(private val activity: Activity) {
         inputImageBuffer = TensorImage(imageDataType)
         outputProbabilityBuffer =
             TensorBuffer.createFixedSize(probabilityShape, probabilityDataType)
-        probabilityProcessor = TensorProcessor.Builder().add(getPostprocessNormalizeOp()).build()
+        probabilityProcessor = TensorProcessor.Builder().add(getPostProcessNormalizeOp()).build()
 
         inputImageBuffer = loadImage(bitmap)
 
         tflite.run(inputImageBuffer.buffer, outputProbabilityBuffer.buffer.rewind())
     }
 
-    private fun getPostprocessNormalizeOp(): TensorOperator {
+    private fun getPostProcessNormalizeOp(): TensorOperator {
         return NormalizeOp(PROBABILITY_MEAN, PROBABILITY_STD)
     }
 
     fun showResult(): String {
         try {
-            labels = FileUtil.loadLabels(activity.applicationContext, "vegs.txt")
+            labels = FileUtil.loadLabels(activity.applicationContext, "10classes_label.txt")
+//            labels = FileUtil.loadLabels(activity.applicationContext, "vegs.txt")
         } catch (e: Exception) {
             e.printStackTrace()
             return "Error reading label file"
@@ -118,6 +125,7 @@ class TFLiteHelper constructor(private val activity: Activity) {
         val labeledProbability = TensorLabel(
             labels!!, probabilityProcessor.process(outputProbabilityBuffer)
         ).mapWithFloatValue
+        Log.d("labeledProbability", "showResult: ${labeledProbability.values}")
         val maxValueInMap = Collections.max(labeledProbability.values)
         var result: String? = null
         for ((key, value) in labeledProbability.entries) {

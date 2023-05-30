@@ -22,9 +22,9 @@ fun getUCropContracts(): ActivityResultContract<List<Uri>, Uri> {
         override fun parseResult(resultCode: Int, intent: Intent?): Uri {
             return intent.let { data ->
                 (if (resultCode == Activity.RESULT_OK) {
-                    UCrop.getOutput(data!!)
+                    data?.let { UCrop.getOutput(it) }
                 } else {
-                    val t = UCrop.getError(data!!)
+                    val t = data?.let { UCrop.getError(it) }
                     Log.e("UCrop Contracts", t?.message.toString(), t)
                     null
                 })!!
