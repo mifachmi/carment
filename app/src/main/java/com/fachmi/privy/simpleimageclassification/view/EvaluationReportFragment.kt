@@ -72,7 +72,6 @@ class EvaluationReportFragment : Fragment() {
                 tvMerkMobil.text = data.merkMobil.capitalize()
                 tvModelMobil.text = data.modelMobil.capitalize()
                 tvTahunMobil.text = data.tahunMobil
-                tvUkuranMobil.text = data.ukuranMobil.capitalize()
                 tvWarnaMobil.text = data.warnaMobil.capitalize()
                 tvJenisKerusakan.text = data.jenisKerusakan
                 tvTingkatKerusakan.text = data.tingkatKerusakan

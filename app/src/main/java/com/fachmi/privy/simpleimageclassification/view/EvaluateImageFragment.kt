@@ -28,11 +28,8 @@ import com.fachmi.privy.simpleimageclassification.R
 import com.fachmi.privy.simpleimageclassification.TFLiteHelper
 import com.fachmi.privy.simpleimageclassification.databinding.DialogPickImageBinding
 import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluateImageBinding
-import com.fachmi.privy.simpleimageclassification.ml.AutoModel10classesMobilenetv2
 import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
 import com.fachmi.privy.simpleimageclassification.utils.*
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import java.io.IOException
 import java.lang.NullPointerException
@@ -55,7 +52,6 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         merkMobil = "",
         modelMobil = "",
         tahunMobil = "",
-        ukuranMobil = "",
         warnaMobil = "",
         jenisKerusakan = "",
         tingkatKerusakan = "",
@@ -113,7 +109,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 showDialogPickImage()
             }
             btnEvaluasiGambar.setOnClickListener {
-                if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputModelMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty() && etInputUkuranMobil.text.isEmpty()) {
+                if (ivUploadedImage.alpha != 1f && etInputMerkMobil.text.isEmpty() && etInputModelMobil.text.isEmpty() && etInputTahunKeluaranMobil.text.isEmpty() && etInputWarnaMobil.text.isEmpty()) {
                     requireContext().showToast("Mohon isi semua data terlebih dahulu")
                 } else {
                     runTheModel()
@@ -262,7 +258,6 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
             merkMobil = binding.etInputMerkMobil.text.toString().lowercase(),
             modelMobil = binding.etInputModelMobil.text.toString().lowercase(),
             tahunMobil = binding.etInputTahunKeluaranMobil.text.toString(),
-            ukuranMobil = binding.etInputUkuranMobil.text.toString().lowercase(),
             warnaMobil = binding.etInputWarnaMobil.text.toString().lowercase(),
             jenisKerusakan = determineDamageType(label),
             tingkatKerusakan = determineLevelDamage(label),
@@ -319,51 +314,437 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         return when (label) {
             "bumper_dent_minor" -> {
                 when (binding.etInputMerkMobil.text.toString().lowercase()) {
-                    "mitsubishi" -> "jdsdsd"
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableRangePrice(
+                                "700",
+                                "956"
+                            )
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "805",
+                                "1.050"
+                            )
+
+                            else -> createReadableRangePrice("908", "1.180")
+                        }
+                    }
+
                     "daihatsu" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
-                            "xenia" -> createReadablePrice("580.000", "600.000")
-                            "sigra" -> createReadablePrice("580.000", "600.000")
-                            "terios" -> createReadablePrice("580.000", "600.000")
-                            "rocky" -> createReadablePrice("580.000", "600.000")
-                            "sirion" -> createReadablePrice("580.000", "600.000")
-                            "ayla" -> createReadablePrice("580.000", "600.000")
-                            "luxio" -> createReadablePrice("580.000", "600.000")
-                            else -> createReadablePrice("672.000", "870.000")
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "450",
+                                "500"
+                            )
+
+                            else -> createReadableRangePrice("516", "645")
                         }
                     }
 
                     "honda" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
-                            "xenia" -> createReadablePrice("580.000", "600.000")
-                            "sigra" -> createReadablePrice("580.000", "600.000")
-                            "terios" -> createReadablePrice("580.000", "600.000")
-                            "rocky" -> createReadablePrice("580.000", "600.000")
-                            "sirion" -> createReadablePrice("580.000", "600.000")
-                            "ayla" -> createReadablePrice("580.000", "600.000")
-                            "luxio" -> createReadablePrice("580.000", "600.000")
-                            else -> createReadablePrice("672.000", "870.000")
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "1.270"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.355")
+
+                            else -> createReadableRangePrice("1.120", "1.300")
                         }
                     }
 
-                    else -> "fdfd"
+                    else -> createReadableRangePrice(
+                        "600",
+                        "1.500"
+                    )
                 }
             }
 
-            "bumper_dent_severe" -> "Rp. 600.000 - Rp. 1.355.000"
-            "bumper_scratch_minor" -> "Rp. 450.000 - Rp. 800.000"
-            "door_dent_minor" -> "Rp. 500.000 - Rp. 700.000"
-            "door_dent_severe" -> "Rp. 700.000 - Rp. 1.645.000"
-            "door_scratch_minor" -> "Rp. 200.000 - Rp. 1.234.000"
-            "glass_shatter_severe" -> "Rp. 350.000 - Rp. 2.359.000"
-            "head_lamp_severe" -> "Rp. 70.000 - Rp. 200.000"
-            "tail_lamp_severe" -> "Rp. 70.000 - Rp. 200.000"
+            "bumper_dent_severe" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableRangePrice(
+                                "700",
+                                "956"
+                            )
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "805",
+                                "1.050"
+                            )
+
+                            else -> createReadableRangePrice("908", "1.180")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "580",
+                                "600"
+                            )
+
+                            else -> createReadableRangePrice("672", "870")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "1.270"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.355")
+
+                            else -> createReadableRangePrice("1.120.000", "1.300")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "600",
+                        "1.355"
+                    )
+                }
+            }
+
+            "bumper_scratch_minor" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableRangePrice(
+                                "700",
+                                "956"
+                            )
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "805",
+                                "1.050"
+                            )
+
+                            else -> createReadableRangePrice("908", "1.180")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "450",
+                                "500"
+                            )
+
+                            else -> createReadableRangePrice("516", "645")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "1.270"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.355")
+
+                            else -> createReadableRangePrice("1.120.000", "1.300")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "450",
+                        "800"
+                    )
+                }
+            }
+
+            "door_dent_minor" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableRangePrice(
+                                "883",
+                                "1.150"
+                            )
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "908",
+                                "1.180"
+                            )
+
+                            else -> createReadableRangePrice("1.016", "1.320")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "500",
+                                "550"
+                            )
+
+                            else -> createReadableRangePrice("560", "701")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "1.500"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.645")
+
+                            else -> createReadableRangePrice("1.300", "1.520")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "500",
+                        "700"
+                    )
+                }
+            }
+
+            "door_dent_severe" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableRangePrice(
+                                "883",
+                                "1.150"
+                            )
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "908",
+                                "1.180"
+                            )
+
+                            else -> createReadableRangePrice("1.016", "1.320")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "690",
+                                "800"
+                            )
+
+                            else -> createReadableRangePrice("795", "1.024")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "1.500"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.645")
+
+                            else -> createReadableRangePrice("1.300", "1.520")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "700",
+                        "1.645"
+                    )
+                }
+            }
+
+            "door_scratch_minor" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableRangePrice(
+                                "883",
+                                "1.150"
+                            )
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "908",
+                                "1.180"
+                            )
+
+                            else -> createReadableRangePrice("1.016", "1.320")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "500",
+                                "550"
+                            )
+
+                            else -> createReadableRangePrice("560", "701")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "1.500"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.645")
+
+                            else -> createReadableRangePrice("1.300", "1.520")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "200",
+                        "1.234"
+                    )
+                }
+            }
+
+            "glass_shatter_severe" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableSinglePrice("4.100")
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableSinglePrice(
+                                "1.700"
+                            )
+
+                            else -> createReadableSinglePrice("3.400")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableRangePrice(
+                                "250",
+                                "350"
+                            )
+
+                            else -> createReadableRangePrice("392", "490")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableRangePrice(
+                                "1.996.000",
+                                "2.178.000"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableRangePrice(
+                                "2.117.000",
+                                "2.359.000"
+                            )
+
+                            else -> createReadableRangePrice("326.000", "1.512.000")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "350",
+                        "2.359"
+                    )
+                }
+            }
+
+            "head_lamp_severe" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableSinglePrice("2.200.000")
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
+                                "1.700.000",
+                                "4.100.000"
+                            )
+
+                            else -> createReadableSinglePrice("11.000.000")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableSinglePrice(
+                                "70.000"
+                            )
+
+                            else -> createReadableRangePrice("78.000", "98.000")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "254.000"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("314.000")
+
+                            else -> createReadableRangePrice("150.000", "300.000")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "70",
+                        "200"
+                    )
+                }
+            }
+
+            "tail_lamp_severe" -> {
+                when (binding.etInputMerkMobil.text.toString().lowercase()) {
+                    "mitsubishi" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "mirage" -> createReadableSinglePrice("1.600.000")
+
+                            "xpander", "outlander px", "xpander cross" -> createReadableSinglePrice(
+                                "1.600.000"
+                            )
+
+                            else -> createReadableSinglePrice("3.500.000")
+                        }
+                    }
+
+                    "daihatsu" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableSinglePrice(
+                                "70.000"
+                            )
+
+                            else -> createReadableRangePrice("78.000", "98.000")
+                        }
+                    }
+
+                    "honda" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
+                                "254.000"
+                            )
+
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("314.000")
+
+                            else -> createReadableRangePrice("150.000", "300.000")
+                        }
+                    }
+
+                    else -> createReadableRangePrice(
+                        "70",
+                        "200"
+                    )
+                }
+            }
+
             else -> "Harga estimasi tidak bisa ditentukan"
         }
     }
 
-    private fun createReadablePrice(lowestPrice: String, highestPrice: String): String {
-        return "Rp. $lowestPrice - Rp. $highestPrice"
+    private fun createReadableRangePrice(lowestPrice: String, highestPrice: String): String {
+        return "Rp. $lowestPrice.000 - Rp. $highestPrice.000"
+    }
+
+    private fun createReadableSinglePrice(price: String): String {
+        return "Rp. $price.000"
     }
 
     override fun onResume() {

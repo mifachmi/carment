@@ -10,7 +10,6 @@ data class CarDamageModel(
     val date: String,
     val merkMobil: String,
     val modelMobil: String,
-    val ukuranMobil: String,
     val tahunMobil: String,
     val warnaMobil: String,
     val jenisKerusakan: String,
