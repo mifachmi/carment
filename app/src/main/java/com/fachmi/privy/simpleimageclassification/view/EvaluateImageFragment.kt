@@ -300,10 +300,11 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         return when (label) {
             "door_dent_minor" -> "Dipoles dan didempul"
             "door_dent_severe" -> "Ganti 1 panel"
+            "door_scratch_minor" -> "Dipoles, didempul, dan dicat ulang"
             "bumper_dent_minor" -> "Dipoles, didempul dan di cat ulang"
             "bumper_dent_severe" -> "Ganti 1 panel"
+            "bumper_scratch_minor" -> "Dipoles, didempul dan di cat ulang"
             "glass_shatter_severe" -> "Ganti 1 panel kaca"
-            "door_scratch_minor" -> "Dipoles, didempul, dan dicat ulang"
             "head_lamp_severe" -> "Ganti panel dan sparepart"
             "tail_lamp_severe" -> "Ganti panel dan sparepart"
             else -> "Tindakan reparasi tidak bisa ditentukan"
@@ -353,6 +354,38 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                         }
                     }
 
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableSinglePrice("532")
+
+                            "innova" -> createReadableSinglePrice("579")
+
+                            "rush", "sienta" -> createReadableSinglePrice("544")
+
+                            "kijang" -> createReadableSinglePrice("579")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableSinglePrice(
+                                "615"
+                            )
+
+                            "yaris", "etios" -> createReadableSinglePrice("627")
+
+                            "vios", "corolla" -> createReadableSinglePrice("579")
+
+                            "altis", "corona", "ft86" -> createReadableSinglePrice("615")
+
+                            "camry", "mark x" -> createReadableSinglePrice("810")
+
+                            "agya" -> createReadableSinglePrice("627")
+
+                            "alphard" -> createReadableSinglePrice("1.040")
+
+                            "lexus" -> createReadableRangePrice("1.420", "1.540")
+
+                            else -> createReadableRangePrice("500", "800")
+                        }
+                    }
+
                     else -> createReadableRangePrice(
                         "600",
                         "1.500"
@@ -397,7 +430,58 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
                             "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.355")
 
-                            else -> createReadableRangePrice("1.120.000", "1.300")
+                            else -> createReadableRangePrice("1.120", "1.300")
+                        }
+                    }
+
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableRangePrice(
+                                "733",
+                                "757"
+                            )
+
+                            "innova" -> createReadableRangePrice("816", "828")
+
+                            "rush", "sienta" -> createReadableRangePrice(
+                                "745",
+                                "769"
+                            )
+
+                            "kijang" -> createReadableRangePrice("804", "828")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableRangePrice(
+                                "851",
+                                "875"
+                            )
+
+                            "yaris", "etios" -> createReadableRangePrice(
+                                "863",
+                                "887"
+                            )
+
+                            "vios", "corolla" -> createReadableRangePrice(
+                                "804",
+                                "828"
+                            )
+
+                            "altis", "corona", "ft86" -> createReadableRangePrice(
+                                "851",
+                                "875"
+                            )
+
+                            "camry", "mark x" -> createReadableRangePrice(
+                                "1.120",
+                                "1.150"
+                            )
+
+                            "agya" -> createReadableSinglePrice("733")
+
+                            "alphard" -> createReadableRangePrice("1.450", "1.480")
+
+                            "lexus" -> createReadableRangePrice("2.380", "3.170")
+
+                            else -> createReadableRangePrice("804", "1.400")
                         }
                     }
 
@@ -445,7 +529,39 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
                             "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.355")
 
-                            else -> createReadableRangePrice("1.120.000", "1.300")
+                            else -> createReadableRangePrice("1.120", "1.300")
+                        }
+                    }
+
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableSinglePrice("532")
+
+                            "innova" -> createReadableSinglePrice("579")
+
+                            "rush", "sienta" -> createReadableSinglePrice("544")
+
+                            "kijang" -> createReadableSinglePrice("579")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableSinglePrice(
+                                "615"
+                            )
+
+                            "yaris", "etios" -> createReadableSinglePrice("627")
+
+                            "vios", "corolla" -> createReadableSinglePrice("579")
+
+                            "altis", "corona", "ft86" -> createReadableSinglePrice("615")
+
+                            "camry", "mark x" -> createReadableSinglePrice("810")
+
+                            "agya" -> createReadableSinglePrice("627")
+
+                            "alphard" -> createReadableSinglePrice("1.040")
+
+                            "lexus" -> createReadableRangePrice("1.420", "1.540")
+
+                            else -> createReadableRangePrice("500", "800")
                         }
                     }
 
@@ -497,6 +613,38 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                         }
                     }
 
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableSinglePrice("615")
+
+                            "innova" -> createReadableSinglePrice("662")
+
+                            "rush", "sienta" -> createReadableSinglePrice("615")
+
+                            "kijang" -> createReadableSinglePrice("639")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableSinglePrice(
+                                "698"
+                            )
+
+                            "yaris", "etios" -> createReadableSinglePrice("627")
+
+                            "vios", "corolla" -> createReadableSinglePrice("639")
+
+                            "altis", "corona", "ft86" -> createReadableSinglePrice("662")
+
+                            "camry", "mark x" -> createReadableSinglePrice("890")
+
+                            "agya" -> createReadableSinglePrice("627")
+
+                            "alphard" -> createReadableSinglePrice("1.120")
+
+                            "lexus" -> createReadableRangePrice("1.530", "1.660")
+
+                            else -> createReadableRangePrice("600", "1.000")
+                        }
+                    }
+
                     else -> createReadableRangePrice(
                         "500",
                         "700"
@@ -542,6 +690,57 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                             "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("1.645")
 
                             else -> createReadableRangePrice("1.300", "1.520")
+                        }
+                    }
+
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableRangePrice(
+                                "840",
+                                "863"
+                            )
+
+                            "innova" -> createReadableRangePrice("922", "946")
+
+                            "rush", "sienta" -> createReadableRangePrice(
+                                "851",
+                                "875"
+                            )
+
+                            "kijang" -> createReadableRangePrice("887", "911")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableRangePrice(
+                                "958",
+                                "993"
+                            )
+
+                            "yaris", "etios" -> createReadableRangePrice(
+                                "875",
+                                "887"
+                            )
+
+                            "vios", "corolla" -> createReadableRangePrice(
+                                "887",
+                                "911"
+                            )
+
+                            "altis", "corona", "ft86" -> createReadableRangePrice(
+                                "922",
+                                "946"
+                            )
+
+                            "camry", "mark x" -> createReadableRangePrice(
+                                "1.220",
+                                "1.250"
+                            )
+
+                            "agya" -> createReadableSinglePrice("851")
+
+                            "alphard" -> createReadableRangePrice("1.540", "1.590")
+
+                            "lexus" -> createReadableRangePrice("1.980", "3.290")
+
+                            else -> createReadableRangePrice("800", "1.000")
                         }
                     }
 
@@ -593,6 +792,38 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                         }
                     }
 
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableSinglePrice("615")
+
+                            "innova" -> createReadableSinglePrice("662")
+
+                            "rush", "sienta" -> createReadableSinglePrice("615")
+
+                            "kijang" -> createReadableSinglePrice("639")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableSinglePrice(
+                                "698"
+                            )
+
+                            "yaris", "etios" -> createReadableSinglePrice("627")
+
+                            "vios", "corolla" -> createReadableSinglePrice("639")
+
+                            "altis", "corona", "ft86" -> createReadableSinglePrice("662")
+
+                            "camry", "mark x" -> createReadableSinglePrice("890")
+
+                            "agya" -> createReadableSinglePrice("627")
+
+                            "alphard" -> createReadableSinglePrice("1.120")
+
+                            "lexus" -> createReadableRangePrice("1.530", "1.660")
+
+                            else -> createReadableRangePrice("600", "1.000")
+                        }
+                    }
+
                     else -> createReadableRangePrice(
                         "200",
                         "1.234"
@@ -641,6 +872,57 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                         }
                     }
 
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableRangePrice(
+                                "414",
+                                "650"
+                            )
+
+                            "innova" -> createReadableRangePrice("508", "698")
+
+                            "rush", "sienta" -> createReadableRangePrice(
+                                "426",
+                                "662"
+                            )
+
+                            "kijang" -> createReadableRangePrice("426", "662")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableRangePrice(
+                                "544",
+                                "863"
+                            )
+
+                            "yaris", "etios" -> createReadableRangePrice(
+                                "745",
+                                "769"
+                            )
+
+                            "vios", "corolla" -> createReadableRangePrice(
+                                "840",
+                                "863"
+                            )
+
+                            "altis", "corona", "ft86" -> createReadableRangePrice(
+                                "851",
+                                "1.052"
+                            )
+
+                            "camry", "mark x" -> createReadableRangePrice(
+                                "1.160",
+                                "1.500"
+                            )
+
+                            "agya" -> createReadableRangePrice("414", "650")
+
+                            "alphard" -> createReadableRangePrice("1.270", "1.720")
+
+                            "lexus" -> createReadableRangePrice("1.820", "2.690")
+
+                            else -> createReadableRangePrice("450", "1.500")
+                        }
+                    }
+
                     else -> createReadableRangePrice(
                         "350",
                         "2.359"
@@ -652,36 +934,68 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 when (binding.etInputMerkMobil.text.toString().lowercase()) {
                     "mitsubishi" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
-                            "mirage" -> createReadableSinglePrice("2.200.000")
+                            "mirage" -> createReadableSinglePrice("2.200")
 
                             "xpander", "outlander px", "xpander cross" -> createReadableRangePrice(
-                                "1.700.000",
-                                "4.100.000"
+                                "1.700",
+                                "4.100"
                             )
 
-                            else -> createReadableSinglePrice("11.000.000")
+                            else -> createReadableSinglePrice("11.000")
                         }
                     }
 
                     "daihatsu" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
                             "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableSinglePrice(
-                                "70.000"
+                                "70"
                             )
 
-                            else -> createReadableRangePrice("78.000", "98.000")
+                            else -> createReadableRangePrice("78", "98")
                         }
                     }
 
                     "honda" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
                             "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
-                                "254.000"
+                                "254"
                             )
 
-                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("314.000")
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("314")
 
-                            else -> createReadableRangePrice("150.000", "300.000")
+                            else -> createReadableRangePrice("150", "300")
+                        }
+                    }
+
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableSinglePrice("83")
+
+                            "innova" -> createReadableSinglePrice("95")
+
+                            "rush", "sienta" -> createReadableSinglePrice("83")
+
+                            "kijang" -> createReadableSinglePrice("83")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableSinglePrice(
+                                "106"
+                            )
+
+                            "yaris", "etios" -> createReadableSinglePrice("83")
+
+                            "vios", "corolla" -> createReadableSinglePrice("83")
+
+                            "altis", "corona", "ft86" -> createReadableSinglePrice("83")
+
+                            "camry", "mark x" -> createReadableSinglePrice("160")
+
+                            "agya" -> createReadableSinglePrice("83")
+
+                            "alphard" -> createReadableSinglePrice("190")
+
+                            "lexus" -> createReadableRangePrice("260", "280")
+
+                            else -> createReadableRangePrice("80", "200")
                         }
                     }
 
@@ -696,35 +1010,67 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 when (binding.etInputMerkMobil.text.toString().lowercase()) {
                     "mitsubishi" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
-                            "mirage" -> createReadableSinglePrice("1.600.000")
+                            "mirage" -> createReadableSinglePrice("1.600")
 
                             "xpander", "outlander px", "xpander cross" -> createReadableSinglePrice(
-                                "1.600.000"
+                                "1.600"
                             )
 
-                            else -> createReadableSinglePrice("3.500.000")
+                            else -> createReadableSinglePrice("3.500")
                         }
                     }
 
                     "daihatsu" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
                             "xenia", "sigra", "terios", "rocky", "sirion", "ayla", "luxio" -> createReadableSinglePrice(
-                                "70.000"
+                                "70"
                             )
 
-                            else -> createReadableRangePrice("78.000", "98.000")
+                            else -> createReadableRangePrice("78", "98")
                         }
                     }
 
                     "honda" -> {
                         when (binding.etInputModelMobil.text.toString().lowercase()) {
                             "brio", "jazz", "fit", "city", "freed", "civic", "steam", "hrv", "brv" -> createReadableSinglePrice(
-                                "254.000"
+                                "254"
                             )
 
-                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("314.000")
+                            "crv", "accord", "odyssey", "crz" -> createReadableSinglePrice("314")
 
-                            else -> createReadableRangePrice("150.000", "300.000")
+                            else -> createReadableRangePrice("150", "300")
+                        }
+                    }
+
+                    "toyota" -> {
+                        when (binding.etInputModelMobil.text.toString().lowercase()) {
+                            "avanza", "calya" -> createReadableSinglePrice("83")
+
+                            "innova" -> createReadableSinglePrice("95")
+
+                            "rush", "sienta" -> createReadableSinglePrice("83")
+
+                            "kijang" -> createReadableSinglePrice("83")
+
+                            "fortuner", "voxy", "chr", "corolla cross" -> createReadableSinglePrice(
+                                "106"
+                            )
+
+                            "yaris", "etios" -> createReadableSinglePrice("83")
+
+                            "vios", "corolla" -> createReadableSinglePrice("83")
+
+                            "altis", "corona", "ft86" -> createReadableSinglePrice("83")
+
+                            "camry", "mark x" -> createReadableSinglePrice("160")
+
+                            "agya" -> createReadableSinglePrice("83")
+
+                            "alphard" -> createReadableSinglePrice("190")
+
+                            "lexus" -> createReadableRangePrice("260", "280")
+
+                            else -> createReadableRangePrice("80", "200")
                         }
                     }
 
