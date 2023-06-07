@@ -3,8 +3,6 @@ package com.fachmi.privy.simpleimageclassification
 import android.app.Activity
 import android.graphics.Bitmap
 import android.util.Log
-import com.fachmi.privy.simpleimageclassification.ml.AutoModel10classesMobilenetv2
-import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.FileUtil
 import org.tensorflow.lite.support.common.TensorOperator
@@ -24,7 +22,8 @@ import java.util.*
 class TFLiteHelper constructor(private val activity: Activity) {
 
     companion object {
-        private const val MODEL_NAME = "10classes_mobilenetv2.tflite"
+        private const val MODEL_NAME = "efficientnetv2b0_try2_80.tflite"
+//        private const val MODEL_NAME = "10classes_mobilenetv2.tflite"
 //        private const val MODEL_NAME = "car_damage_model.tflite"
     }
 
