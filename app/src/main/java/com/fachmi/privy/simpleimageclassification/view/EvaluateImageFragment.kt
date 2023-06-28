@@ -41,7 +41,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     private lateinit var binding: FragmentEvaluateImageBinding
     private lateinit var tfLiteHelper: TFLiteHelper
     private var bitmap: Bitmap? = null
-    private lateinit var finalImageUri: Uri
+    private var finalImageUri: Uri? = null
     private val cameraOutputFile by lazy { createImageFile(requireContext()) }
 
     private var listener: ImagePickerListener? = null
@@ -140,6 +140,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                     Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
+                Log.d("btnFromCamera", "showDialogPickImage: $cameraOutputFile")
                 cameraLauncher.openCamera(requireContext(), cameraOutputFile)
             } else {
                 // Permission is not granted, request the permission
@@ -162,9 +163,10 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            val outputUri = createImageFile(context).toUri()
+            cameraLauncher.openCamera(requireContext(), cameraOutputFile)
+            /*val outputUri = createImageFile(context).toUri()
             val listUri = listOf(cameraOutputFile.toUri(), outputUri)
-            cropImageLauncher.launch(listUri)
+            cropImageLauncher.launch(listUri)*/
         } else {
             // Permission is not granted, show a message to the user
             Toast.makeText(
@@ -180,13 +182,35 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
             if (result.resultCode == Activity.RESULT_OK) {
                 val outputUri = createImageFile(context).toUri()
                 val listUri = listOf(cameraOutputFile.toUri(), outputUri)
+                Log.d("cameraLauncher", "outputUri: $outputUri")
+                Log.d("cameraLauncher", "listUri: $listUri")
                 cropImageLauncher.launch(listUri)
+                requireContext().showToast("kesini")
             }
         }
 
     private val cropImageLauncher =
         registerForActivityResult(getUCropContracts()) { croppedImageUri ->
-            try {
+            Log.d("cropImageLauncher croppedImageUri", "$croppedImageUri")
+
+            croppedImageUri?.let {
+                val croppedImageFile = croppedImageUri.toFile()
+                context?.let { ctx ->
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(
+                            ctx.contentResolver,
+                            croppedImageUri
+                        )
+                        Log.d("cropImageLauncher", "Image is loaded: $croppedImageUri")
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+                listener?.onImageSelected(croppedImageFile)
+                /*findNavController().popBackStack()*/
+            }
+
+            /*try {
                 if (croppedImageUri != null) {
                     try {
                         val croppedImageFile = croppedImageUri.toFile()
@@ -205,10 +229,12 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                     } catch (e: NullPointerException) {
                         fragmentManager?.popBackStack()
                     }
+                } else {
+                    print("croppedImageUri di dalem else: $croppedImageUri")
                 }
             } catch (e: NullPointerException) {
                 findNavController().popBackStack()
-            }
+            }*/
         }
 
     override fun onImageSelected(imageFile: File) {
@@ -253,7 +279,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
     private fun determineOutput(label: String?): CarDamageModel {
         return CarDamageModel(
-            carImage = finalImageUri,
+            carImage = finalImageUri ?: Uri.EMPTY,
             date = getCurrentDate(),
             merkMobil = binding.etInputMerkMobil.text.toString().lowercase(),
             modelMobil = binding.etInputModelMobil.text.toString().lowercase(),
