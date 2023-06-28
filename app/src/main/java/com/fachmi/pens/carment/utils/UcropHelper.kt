@@ -1,13 +1,11 @@
-package com.fachmi.privy.simpleimageclassification.utils
+package com.fachmi.pens.carment.utils
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContract
 import com.yalantis.ucrop.UCrop
-import java.net.URI
 
 /*
 fun getUCropContracts(): ActivityResultContract<List<Uri>, Uri> {

@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification
+package com.fachmi.pens.carment
 
 import org.junit.Test
 

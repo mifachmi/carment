@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.utils
+package com.fachmi.pens.carment.utils
 
 import java.io.File
 

@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.view
+package com.fachmi.pens.carment.view
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -12,11 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
-import com.fachmi.privy.simpleimageclassification.R
-import com.fachmi.privy.simpleimageclassification.databinding.DialogQuitConfirmationBinding
-import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluationReportBinding
-import com.fachmi.privy.simpleimageclassification.databinding.ScreenshotInformationBinding
-import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
+import com.fachmi.pens.carment.R
+import com.fachmi.pens.carment.databinding.DialogQuitConfirmationBinding
+import com.fachmi.pens.carment.databinding.FragmentEvaluationReportBinding
+import com.fachmi.pens.carment.databinding.ScreenshotInformationBinding
+import com.fachmi.pens.carment.model.CarDamageModel
 
 class EvaluationReportFragment : Fragment() {
 

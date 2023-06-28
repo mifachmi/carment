@@ -32,7 +32,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.fachmi.privy.simpleimageclassification.android.fileprovider"
+            android:authorities="com.fachmi.pens.carment.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

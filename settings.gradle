@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 
     }
 }
-rootProject.name = "Simple Image Classification"
+rootProject.name = "Carment"
 include ':app'

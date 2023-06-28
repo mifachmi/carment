@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.view
+package com.fachmi.pens.carment.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatDelegate
-import com.fachmi.privy.simpleimageclassification.MainActivity
-import com.fachmi.privy.simpleimageclassification.databinding.ActivitySplashScreenBinding
+import com.fachmi.pens.carment.MainActivity
+import com.fachmi.pens.carment.databinding.ActivitySplashScreenBinding
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {

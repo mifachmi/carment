@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.fachmi.privy.simpleimageclassification.view.HomeFragment"
+        android:name="com.fachmi.pens.carment.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/evaluateImageFragment"
-        android:name="com.fachmi.privy.simpleimageclassification.view.EvaluateImageFragment"
+        android:name="com.fachmi.pens.carment.view.EvaluateImageFragment"
         android:label="fragment_evaluate_image"
         tools:layout="@layout/fragment_evaluate_image">
         <action
@@ -31,21 +31,21 @@
     </fragment>
     <fragment
         android:id="@+id/evaluationReportFragment"
-        android:name="com.fachmi.privy.simpleimageclassification.view.EvaluationReportFragment"
+        android:name="com.fachmi.pens.carment.view.EvaluationReportFragment"
         android:label="fragment_evaluation_report"
         tools:layout="@layout/fragment_evaluation_report">
         <argument
             android:name="dataEvaluation"
-            app:argType="com.fachmi.privy.simpleimageclassification.model.CarDamageModel" />
+            app:argType="com.fachmi.pens.carment.model.CarDamageModel" />
     </fragment>
     <fragment
         android:id="@+id/userGuideFragment"
-        android:name="com.fachmi.privy.simpleimageclassification.view.UserGuideFragment"
+        android:name="com.fachmi.pens.carment.view.UserGuideFragment"
         android:label="fragment_user_guide"
         tools:layout="@layout/fragment_user_guide" />
     <fragment
         android:id="@+id/dataBengkelFragment"
-        android:name="com.fachmi.privy.simpleimageclassification.view.DataBengkelFragment"
+        android:name="com.fachmi.pens.carment.view.DataBengkelFragment"
         android:label="fragment_data_bengkel"
         tools:layout="@layout/fragment_data_bengkel" />
 </navigation>

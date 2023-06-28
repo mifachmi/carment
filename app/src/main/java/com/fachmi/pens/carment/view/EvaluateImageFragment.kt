@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.view
+package com.fachmi.pens.carment.view
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -24,15 +24,14 @@ import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.fachmi.privy.simpleimageclassification.R
-import com.fachmi.privy.simpleimageclassification.TFLiteHelper
-import com.fachmi.privy.simpleimageclassification.databinding.DialogPickImageBinding
-import com.fachmi.privy.simpleimageclassification.databinding.FragmentEvaluateImageBinding
-import com.fachmi.privy.simpleimageclassification.model.CarDamageModel
-import com.fachmi.privy.simpleimageclassification.utils.*
+import com.fachmi.pens.carment.R
+import com.fachmi.pens.carment.TFLiteHelper
+import com.fachmi.pens.carment.databinding.DialogPickImageBinding
+import com.fachmi.pens.carment.databinding.FragmentEvaluateImageBinding
+import com.fachmi.pens.carment.model.CarDamageModel
+import com.fachmi.pens.carment.utils.*
 import java.io.File
 import java.io.IOException
-import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.Date
 

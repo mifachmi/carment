@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.view
+package com.fachmi.pens.carment.view
 
 import android.content.Intent
 import android.net.Uri
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.fachmi.privy.simpleimageclassification.databinding.FragmentDataBengkelBinding
+import com.fachmi.pens.carment.databinding.FragmentDataBengkelBinding
 
 class DataBengkelFragment : Fragment() {
     private lateinit var binding: FragmentDataBengkelBinding

@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.view
+package com.fachmi.pens.carment.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
-import com.fachmi.privy.simpleimageclassification.R
-import com.fachmi.privy.simpleimageclassification.databinding.FragmentHomeBinding
-import com.fachmi.privy.simpleimageclassification.utils.showToast
+import com.fachmi.pens.carment.R
+import com.fachmi.pens.carment.databinding.FragmentHomeBinding
+import com.fachmi.pens.carment.utils.showToast
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding

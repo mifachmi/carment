@@ -1,8 +1,7 @@
-package com.fachmi.privy.simpleimageclassification.utils
+package com.fachmi.pens.carment.utils
 
 import android.content.Context
 import android.os.Environment
-import android.widget.ImageView
 import android.widget.Toast
 import java.io.File
 import java.text.SimpleDateFormat

@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.model
+package com.fachmi.pens.carment.model
 
 import android.net.Uri
 import android.os.Parcelable

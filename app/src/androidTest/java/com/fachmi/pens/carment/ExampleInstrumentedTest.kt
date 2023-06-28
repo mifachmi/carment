@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification
+package com.fachmi.pens.carment
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

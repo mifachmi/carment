@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification.utils
+package com.fachmi.pens.carment.utils
 
 import android.content.Context
 import android.content.Intent
@@ -31,7 +31,7 @@ fun ActivityResultLauncher<Intent>.openCamera(context: Context?, outputFile: Fil
             intent.resolveActivity(context.packageManager)?.also {
                 val photoUri = FileProvider.getUriForFile(
                     context,
-                    "com.fachmi.privy.simpleimageclassification.android.fileprovider",
+                    "com.fachmi.pens.carment.android.fileprovider",
                     outputFile
                 )
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)

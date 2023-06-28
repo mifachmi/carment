@@ -1,11 +1,11 @@
-package com.fachmi.privy.simpleimageclassification.view
+package com.fachmi.pens.carment.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.fachmi.privy.simpleimageclassification.databinding.FragmentUserGuideBinding
+import com.fachmi.pens.carment.databinding.FragmentUserGuideBinding
 
 class UserGuideFragment : Fragment() {
 

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.fachmi.privy.simpleimageclassification'
+    namespace 'com.fachmi.pens.carment'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.fachmi.privy.simpleimageclassification"
+        applicationId "com.fachmi.pens.carment"
         minSdk 23
         targetSdk 33
         versionCode 1

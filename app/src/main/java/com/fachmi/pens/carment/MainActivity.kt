@@ -1,4 +1,4 @@
-package com.fachmi.privy.simpleimageclassification
+package com.fachmi.pens.carment
 
 import android.Manifest
 import android.app.Activity
@@ -11,10 +11,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import com.fachmi.privy.simpleimageclassification.databinding.ActivityMainBinding
-import com.fachmi.privy.simpleimageclassification.utils.createImageFile
-import com.fachmi.privy.simpleimageclassification.utils.hasPermissions
-import com.fachmi.privy.simpleimageclassification.utils.log
+import com.fachmi.pens.carment.databinding.ActivityMainBinding
+import com.fachmi.pens.carment.utils.createImageFile
+import com.fachmi.pens.carment.utils.hasPermissions
+import com.fachmi.pens.carment.utils.log
 
 class MainActivity : AppCompatActivity() {
 
