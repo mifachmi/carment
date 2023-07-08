@@ -49,6 +49,9 @@
             android:exported="false"
             android:screenOrientation="portrait">
 
+            <!--use this if there is deeplink-->
+            <nav-graph android:value="@navigation/main_nav" />
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
