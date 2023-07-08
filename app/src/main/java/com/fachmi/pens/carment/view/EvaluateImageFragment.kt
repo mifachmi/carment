@@ -37,7 +37,9 @@ import java.util.Date
 
 class EvaluateImageFragment : Fragment(), ImagePickerListener {
 
-    private lateinit var binding: FragmentEvaluateImageBinding
+    private var _binding: FragmentEvaluateImageBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var tfLiteHelper: TFLiteHelper
     private var bitmap: Bitmap? = null
     private var finalImageUri: Uri? = null
@@ -82,7 +84,7 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEvaluateImageBinding.inflate(inflater, container, false)
+        _binding = FragmentEvaluateImageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -267,9 +269,14 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
         val bundle = Bundle().apply {
             putParcelable("dataEvaluation", finalData)
         }
-        findNavController().navigate(
+        val safeBundle =
+            EvaluateImageFragmentDirections.actionEvaluateImageFragmentToEvaluationReportFragment(
+                finalData
+            )
+        /*findNavController().navigate(
             R.id.action_evaluateImageFragment_to_evaluationReportFragment, bundle
-        )
+        )*/
+        findNavController().navigate(safeBundle)
     }
 
     private fun setLabel(label: String?) {
@@ -1125,6 +1132,11 @@ class EvaluateImageFragment : Fragment(), ImagePickerListener {
                 showDialogPickImage()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

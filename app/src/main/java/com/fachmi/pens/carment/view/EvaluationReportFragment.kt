@@ -20,14 +20,15 @@ import com.fachmi.pens.carment.model.CarDamageModel
 
 class EvaluationReportFragment : Fragment() {
 
-    private lateinit var binding: FragmentEvaluationReportBinding
+    private var _binding: FragmentEvaluationReportBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentEvaluationReportBinding.inflate(inflater, container, false)
+        _binding = FragmentEvaluationReportBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,7 +38,8 @@ class EvaluationReportFragment : Fragment() {
 
         showProgressBar()
         handleClickListeners()
-        receiveParcelable()
+        receiveSafeParcelable()
+        /*receiveParcelable()*/
     }
 
     private fun showProgressBar() {
@@ -59,6 +61,23 @@ class EvaluationReportFragment : Fragment() {
             btnBack.setOnClickListener {
                 showQuitConfirmation()
             }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun receiveSafeParcelable() {
+        val receivedData = EvaluationReportFragmentArgs.fromBundle(arguments as Bundle).dataEvaluation
+        binding.apply {
+            tvTanggalEvaluasi.text = "${receivedData.date} WIB"
+            tvMerkMobil.text = receivedData.merkMobil.capitalize()
+            tvModelMobil.text = receivedData.modelMobil.capitalize()
+            tvTahunMobil.text = receivedData.tahunMobil
+            tvWarnaMobil.text = receivedData.warnaMobil.capitalize()
+            tvJenisKerusakan.text = receivedData.jenisKerusakan
+            tvTingkatKerusakan.text = receivedData.tingkatKerusakan
+            tvTindakanReparasi.text = receivedData.tindakanReparasi
+            tvEstimasiReparasi.text = receivedData.estimasiHarga
+            ivEvaluatedImage.setImageURI(receivedData.carImage)
         }
     }
 
@@ -122,6 +141,11 @@ class EvaluationReportFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }
